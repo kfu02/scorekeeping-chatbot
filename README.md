@@ -5,7 +5,7 @@ A python-based chatbot for FB Messenger that tracks scores.
 
 Download this directory. Install fbchat with pip. Add the email and password of a working facebook account to login.py, and clear the uid_to_name.txt and name_to_score.txt files. 
 
-!WARNING: This bot does not abide by the Facebook Terms and Conditions. If you spam a messenger chat using this bot, FB will likely mark your account as malicious and close it.
+WARNING: This bot does not abide by the Facebook Terms and Conditions. If you spam a messenger chat using this bot, FB will likely mark your account as malicious and close it.
 
 ## Usage 
 
