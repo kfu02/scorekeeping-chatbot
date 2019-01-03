@@ -15,7 +15,7 @@ This bot is designed to be used in a FB Messenger group chat, but it can be used
 
 ## About the `Scorekeeper` class
 
-The `Scorekeeper` class takes four arguments: the first two being the login credentials of the designated FB account and the next two being an initial list of people on the scoreboard and the word they will use to increment their own scores.
+The `Scorekeeper` class takes four arguments: the first two being the login credentials of the designated FB account and the next two being an initial list of people on the scoreboard and the word they will use to increment their own scores. It updates `uid_to_name.txt` every time someone new texts its linked account, and updates `name_to_score.txt` when a new name is added to its whitelist. 
 
 ## TO-DO:
 
