@@ -1,0 +1,9 @@
+/help to see these commands
+/score to see the total score
+/clear to clear scores
+
+---
+debug commands:
+/whitelist to see whitelist (only users on whitelist have a score)
+/mod [name] to add user to whitelist
+/unmod [name] to remove user from whitelist
