@@ -13,9 +13,9 @@ To run, type 'python3 chatbot.py' into your terminal. (For long-term usage, I ha
 
 This bot is designed to be used in a FB Messenger group chat, but it can be used by separate individuals via private message due to the way the Scorekeeper class stores information in a text file.
 
-## About the 'Scorekeeper' class
+## About the ' Scorekeeper ' class
 
-The 'Scorekeeper' class takes four arguments: the first two being the login credentials of the designated FB account and the next two being an initial list of people on the scoreboard and the word they will use to increment their own scores.
+The ' Scorekeeper ' class takes four arguments: the first two being the login credentials of the designated FB account and the next two being an initial list of people on the scoreboard and the word they will use to increment their own scores.
 
 ## TO-DO:
 
