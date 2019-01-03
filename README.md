@@ -9,7 +9,7 @@ WARNING: This bot does not abide by the Facebook Terms and Conditions. If you sp
 
 ## Usage 
 
-To run, type 'python3 chatbot.py' into your terminal. (For long-term usage, I have mine set up to run constantly on a headless raspberry pi.) To see relevant commands, type /help.
+To run, type 'python3 chatbot.py' into your terminal. (For long-term usage, I have mine set up to run constantly on a headless raspberry pi.) To see relevant commands, type /help in a Messenger chat with the bot's account. (This video is helpful for reference; it uses the same python module but adds in support for DialogFlow. https://youtu.be/hIcZZCnFcH4)
 
 This bot is designed to be used in a FB Messenger group chat, but it can be used by separate individuals via private message due to the way the Scorekeeper class stores information in a text file.
 
