@@ -1,9 +1,9 @@
 """https://fbchat.readthedocs.io/en/master/examples.html#examples"""
-
 from fbchat import log, Client
 from fbchat.models import *
 import login
 
+print("This project is from: https://github.com/kfu02/scorekeeping-chatbot")
 # Subclass fbchat.Client and override required methods
 class Scorekeeper(Client):
     def __init__(self, email, pwd, whitelist, key):
