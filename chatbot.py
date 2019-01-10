@@ -1,18 +1,21 @@
 """https://fbchat.readthedocs.io/en/master/examples.html#examples"""
+
 from fbchat import log, Client
 from fbchat.models import *
 import login
+import time
+import random
 
-print("This project is from: https://github.com/kfu02/scorekeeping-chatbot")
 # Subclass fbchat.Client and override required methods
 class Scorekeeper(Client):
-    def __init__(self, email, pwd, whitelist, key):
+    def __init__(self, email, pwd, whitelist, admins, key):
         super().__init__(email, pwd)
         print("Reading from files...")
         stored_dicts = self.readFromFiles()
         self.name_to_score = stored_dicts[0] #username: score
         self.uid_to_name = stored_dicts[1] #uid: username
         self.whitelist = whitelist #users who can change their score
+        self.admins = admins #users with full access to all commands
         self.keyword = key #word to increment score
         print("Done.")
         self.updateUsers()
@@ -80,21 +83,34 @@ class Scorekeeper(Client):
             return "Scores cleared.\n" + self.tallyScores()
 
         #admin commands
-        if msg_text == "whitelist":
-            return str(self.whitelist)
-        if "mod" in msg_text:
-            args = msg_text.split(" ")
-            if args[0] == "mod":
-                name = ' '.join(args[1:]).title()
-                self.whitelist.append(name)
-                self.writeToFiles()
+        if self.uid_to_name[author_id] in self.admins:
+            if msg_text == "whitelist":
                 return str(self.whitelist)
-            if args[0] == "unmod":
-                name = ' '.join(args[1:]).title()
-                if name in self.whitelist:
-                    self.whitelist.remove(name)
-                self.writeToFiles()
-                return str(self.whitelist)
+            if "mod" in msg_text:
+                args = msg_text.split(" ")
+                if args[0] == "mod":
+                    name = ' '.join(args[1:]).title()
+                    self.whitelist.append(name)
+                    self.writeToFiles()
+                    return str(self.whitelist)
+                if args[0] == "unmod":
+                    name = ' '.join(args[1:]).title()
+                    if name in self.whitelist:
+                        self.whitelist.remove(name)
+                    self.writeToFiles()
+                    return str(self.whitelist)
+            if "add" in msg_text:
+                args = msg_text.split(" ")
+                if len(args) == 4:
+                    name = (' '.join(args[1:3])).title()
+                    points = int(args[3])
+                    uid = -1
+                    for u, n in self.uid_to_name.items(): #find uid of name given
+                        if n == name:
+                            uid = u
+                    if uid != -1:
+                        self.addToScoreboard(uid, points)
+                        return self.tallyScores()
 
         return "Command not recognized. Typo?"
 
@@ -106,25 +122,32 @@ class Scorekeeper(Client):
         self.writeToFiles()
         return scores
 
-    def addToScoreboard(self, author_id):
+    def addToScoreboard(self, author_id, amount):
+        #add amount to author_id's score in scoreboard
         if author_id in self.uid_to_name:
             name = self.uid_to_name[author_id]
-            print(name)
-            print(self.whitelist)
             if name in self.whitelist:
-                self.name_to_score[name] += 1
+                self.name_to_score[name] += amount
                 return "Score updated.\n"+self.tallyScores()
             else:
                 return "Not on scoreboard."
         return "???" #shouldn't be possible to get here
 
+    def spitRandomWords(self, word_file, length):
+        #returns string of words with random ending punc
+        word_list = open(word_file, 'r').read().split('\n')[:-1]
+        random.seed(time.time())
+        output = [random.choice(word_list) for i in range(length)]
+        return " ".join(output)+random.choice([".", "!", "?", ""])
+
     def onMessage(self, author_id, message_object, thread_id, thread_type, **kwargs):
         #main looping function that checks for incoming messages and reacts
         self.markAsDelivered(thread_id, message_object.uid)
+        time.sleep(random.randint(3,5)) #wait a few seconds before marking as read
         self.markAsRead(thread_id)
 
         log.info("{} from {} in {}".format(message_object, thread_id, thread_type.name))
-        # If you're not the author, echo
+        #if bot not the author, reply
         if author_id != self.uid:
             self.updateUsers()
             try:
@@ -132,20 +155,25 @@ class Scorekeeper(Client):
             except AttributeError: #emoji sent
                 msg_text = ""
 
-            if msg_text == self.keyword: #add to score
-                reply = self.addToScoreboard(author_id)
+            time.sleep(random.randint(1,2)) #wait a couple seconds before replying
+
+            if msg_text == self.keyword: #if keyword, add to score
+                reply = self.addToScoreboard(author_id, 1)
                 self.send(Message(text=reply), thread_id=thread_id, thread_type=thread_type)
                 return
 
-            if "/" not in msg_text: #if not a command,
-                return #ignore
-            #else, execute command, update text files
-            reply = self.commandHandler(author_id, msg_text)
-            print(self.name_to_score)
-            print(self.uid_to_name)
-            print(reply)
-            self.send(Message(text=reply), thread_id=thread_id, thread_type=thread_type)
+            #execute command, update text files
+            if "/" in msg_text:
+                reply = self.commandHandler(author_id, msg_text)
+                print(self.name_to_score)
+                print(self.uid_to_name)
+                print(reply)
+                self.send(Message(text=reply), thread_id=thread_id, thread_type=thread_type)
+
+            if random.random()<0.20: #every 5th message reply something random
+                self.send(Message(text=self.spitRandomWords("list_of_words.txt", random.randint(2, 10))), thread_id=thread_id, thread_type=thread_type)
 
 WHITELIST = [] #add names here
-client = Scorekeeper(login.email, login.password, WHITELIST, "I scored!")
+ADMINS = [] #add names here
+client = Scorekeeper(login.email, login.password, WHITELIST, ADMINS, "score!")
 client.listen()
