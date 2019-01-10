@@ -19,6 +19,5 @@ The `Scorekeeper` class takes four arguments: the first two being the login cred
 
 ## TO-DO:
 
-- [ ] Create admin privileges – users who have the ability to modify the whitelist and scoreboard
 - [ ] Devise a better method of data storage than local text files (Google Sheets, perhaps)
 - [ ] Make `command_list.txt` based on actual commands used rather than hardcoding it
