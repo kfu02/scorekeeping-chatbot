@@ -7,7 +7,7 @@ import time
 import random
 
 # Subclass fbchat.Client and override required methods
-class No_U_Bot(Client):
+class Scorekeeper(Client):
     def __init__(self, email, pwd, whitelist, admins, key):
         super().__init__(email, pwd)
         print("Reading from files...")
@@ -175,5 +175,5 @@ class No_U_Bot(Client):
 
 WHITELIST = [] #add names here
 ADMINS = [] #add names here
-client = No_U_Bot(login.email, login.password, WHITELIST, ADMINS, "score!")
+client = Scorekeeper(login.email, login.password, WHITELIST, ADMINS, "score!")
 client.listen()
