@@ -1,11 +1,10 @@
-https://github.com/kfu02/scorekeeping-chatbot
-
 /help to see these commands
 /score to see the total score
 /clear to clear scores
 
 ---
-debug commands:
-/whitelist to see whitelist (only users on whitelist have a score)
+admin commands:
+/whitelist to see whitelist
 /mod [name] to add user to whitelist
 /unmod [name] to remove user from whitelist
+/add [name] [points] to add points to name's score
