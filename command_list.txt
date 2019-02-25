@@ -1,5 +1,3 @@
-https://github.com/kfu02/scorekeeping-chatbot
-
 /help to see these commands
 /score to see the total score
 /clear to clear scores
@@ -11,3 +9,5 @@ admin commands:
 /mod [name] to add user to whitelist
 /unmod [name] to remove user from whitelist
 /add [name] [points] to add points to name's score
+
+See https://github.com/kfu02/scorekeeping-chatbot for more usage details.
