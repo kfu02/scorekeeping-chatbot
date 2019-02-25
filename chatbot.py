@@ -2,9 +2,10 @@
 
 from fbchat import log, Client
 from fbchat.models import *
-import login
+import secret
 import time
 import random
+import pickle
 
 # Subclass fbchat.Client and override required methods
 class Scorekeeper(Client):
@@ -38,6 +39,14 @@ class Scorekeeper(Client):
 
     def writeToFiles(self):
         #writes all current data structures to files
+        f = open('name_to_score.pkl', 'wb')
+        pickle.dump(self.name_to_score, f)
+        f.close()
+
+        f = open('uid_to_name.pkl', 'wb')
+        pickle.dump(self.uid_to_name, f)
+        f.close()
+        """
         with open("name_to_score.txt", 'w') as f:
             for name, score in self.name_to_score.items():
                 f.write(name + " " + str(score) + "\n")
@@ -46,9 +55,24 @@ class Scorekeeper(Client):
             for uid, name in self.uid_to_name.items():
                 f.write(uid + " " + name + "\n")
         f.close()
+        """
 
     def readFromFiles(self):
         #takes input from score and uid files
+        try:
+            f = open('name_to_score.pkl', 'rb')
+            ns = pickle.load(f)
+            f.close()
+
+            f = open('uid_to_name.pkl', 'rb')
+            un = pickle.load(f)
+            f.close()
+            print(ns)
+            print(un)
+            return (ns, un)
+        except FileNotFoundError:
+            return ({}, {})
+        """
         try:
             raw_name_to_score = open("name_to_score.txt", 'r').read().split("\n")[:-1]
             name_to_score = {}
@@ -68,6 +92,7 @@ class Scorekeeper(Client):
             return (name_to_score, uid_to_name)
         except FileNotFoundError:
             return ({},{})
+        """
 
     def commandHandler(self, author_id, msg_text):
         msg_text = msg_text[1:] #remove '/'
@@ -86,6 +111,8 @@ class Scorekeeper(Client):
         if self.uid_to_name[author_id] in self.admins:
             if msg_text == "whitelist":
                 return str(self.whitelist)
+            if msg_text == "admins":
+                return str(self.admins)
             if "mod" in msg_text:
                 args = msg_text.split(" ")
                 if args[0] == "mod":
@@ -173,7 +200,6 @@ class Scorekeeper(Client):
             if random.random()<0.20: #every 5th message reply something random
                 self.send(Message(text=self.spitRandomWords("list_of_words.txt", random.randint(2, 10))), thread_id=thread_id, thread_type=thread_type)
 
-WHITELIST = [] #add names here
-ADMINS = [] #add names here
-client = Scorekeeper(login.email, login.password, WHITELIST, ADMINS, "score!")
-client.listen()
+if __name__ == '__main__':
+    client = Scorekeeper(secret.email, secret.password, secret.WHITELIST, secret.ADMINS, secret.keyword)
+    client.listen()

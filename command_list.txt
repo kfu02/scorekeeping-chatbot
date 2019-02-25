@@ -6,6 +6,7 @@ https://github.com/kfu02/scorekeeping-chatbot
 
 ---
 admin commands:
+/admins to see admins
 /whitelist to see whitelist
 /mod [name] to add user to whitelist
 /unmod [name] to remove user from whitelist
