@@ -1,3 +1,4 @@
 secret.py
 force_save.py
 *.pkl
+__pycache__
