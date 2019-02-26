@@ -11,6 +11,7 @@ import pickle
 class Scorekeeper(Client):
     def __init__(self, email, pwd, whitelist, admins, key):
         super().__init__(email, pwd)
+        self.updateUsers()
         print("Reading from files...")
         stored_dicts = self.readFromFiles()
         self.name_to_score = stored_dicts[0] #username: score
@@ -19,7 +20,6 @@ class Scorekeeper(Client):
         self.admins = admins #users with full access to all commands
         self.keyword = key #word to increment score
         print("Done.")
-        self.updateUsers()
 
     def updateUsers(self):
         #updates users that chatbot recognizes
