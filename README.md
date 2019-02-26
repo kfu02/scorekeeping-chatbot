@@ -23,7 +23,7 @@ WARNING: This bot does not abide by the Facebook Terms and Conditions. If you sp
 
 To run, type `python3 chatbot.py` into your terminal. (For long-term usage, I have mine set up to run constantly on a headless raspberry pi.) To see a list of commands, type `/help` in a Messenger chat with the bot's account. (This video is helpful for reference; it uses the same python module but adds in support for DialogFlow. https://youtu.be/hIcZZCnFcH4)
 
-(If login fails on the first run, log in on https://m.facebook.com/login.php by hand, then call chatbot.py.)
+If login fails on the first run, log in on https://m.facebook.com/login.php by hand, then call chatbot.py.
 
 This bot is designed to be used in a FB Messenger group chat, but it can be used by separate individuals via private message.
 
