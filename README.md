@@ -10,9 +10,9 @@ Download this directory. Install fbchat with pip. Create a `secret.py` file with
 email =
 password =
 #names of users with full access to commands
-ADMINS =
+ADMINS = ['Full Control']
 #names of users on the scoreboard
-WHITELIST =
+WHITELIST = ['White List', 'Me Here']
 #word or phrase that will increment score
 keyword =
 ```
