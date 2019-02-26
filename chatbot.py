@@ -46,16 +46,6 @@ class Scorekeeper(Client):
         f = open('uid_to_name.pkl', 'wb')
         pickle.dump(self.uid_to_name, f)
         f.close()
-        """
-        with open("name_to_score.txt", 'w') as f:
-            for name, score in self.name_to_score.items():
-                f.write(name + " " + str(score) + "\n")
-        f.close()
-        with open("uid_to_name.txt", 'w') as f:
-            for uid, name in self.uid_to_name.items():
-                f.write(uid + " " + name + "\n")
-        f.close()
-        """
 
     def readFromFiles(self):
         #takes input from score and uid files
@@ -72,27 +62,6 @@ class Scorekeeper(Client):
             return (ns, un)
         except FileNotFoundError:
             return ({}, {})
-        """
-        try:
-            raw_name_to_score = open("name_to_score.txt", 'r').read().split("\n")[:-1]
-            name_to_score = {}
-            for line in raw_name_to_score:
-                tokens = line.split(" ")
-                name = tokens[0] + " " + tokens[1]
-                score = int(tokens[2])
-                name_to_score[name] = score
-
-            raw_uid_to_name = open("uid_to_name.txt", 'r').read().split("\n")[:-1]
-            uid_to_name = {}
-            for line in raw_uid_to_name:
-                tokens = line.split(" ")
-                uid = tokens[0]
-                name = tokens[1] + " " + tokens[2]
-                uid_to_name[uid] = name
-            return (name_to_score, uid_to_name)
-        except FileNotFoundError:
-            return ({},{})
-        """
 
     def commandHandler(self, author_id, msg_text):
         msg_text = msg_text[1:] #remove '/'
@@ -170,12 +139,15 @@ class Scorekeeper(Client):
     def onMessage(self, author_id, message_object, thread_id, thread_type, **kwargs):
         #main looping function that checks for incoming messages and reacts
         self.markAsDelivered(thread_id, message_object.uid)
-        time.sleep(random.randint(3,5)) #wait a few seconds before marking as read
+        time.sleep(random.randint(1,4)) #wait a few seconds before marking as read
         self.markAsRead(thread_id)
 
         log.info("{} from {} in {}".format(message_object, thread_id, thread_type.name))
         #if bot not the author, reply
         if author_id != self.uid:
+            #always send something random first
+            self.send(Message(text=self.spitRandomWords("list_of_words.txt", random.randint(2, 10))), thread_id=thread_id, thread_type=thread_type)
+            time.sleep(random.randint(1,4)) #wait a few seconds before responding to command
             self.updateUsers()
             try:
                 msg_text = message_object.text.lower()
@@ -196,9 +168,6 @@ class Scorekeeper(Client):
                 print(self.uid_to_name)
                 print(reply)
                 self.send(Message(text=reply), thread_id=thread_id, thread_type=thread_type)
-
-            if random.random()<0.20: #every 5th message reply something random
-                self.send(Message(text=self.spitRandomWords("list_of_words.txt", random.randint(2, 10))), thread_id=thread_id, thread_type=thread_type)
 
 if __name__ == '__main__':
     client = Scorekeeper(secret.email, secret.password, secret.WHITELIST, secret.ADMINS, secret.keyword)
