@@ -29,7 +29,6 @@ This bot is designed to be used in a FB Messenger group chat, but it can be used
 
 ## TO-DO:
 
-- [ ] Update README properly.
 - [ ] Make bot better at updating list of users.
 - [ ] Streamline code.
 - [ ] Make `command_list.txt` based on actual commands used rather than hardcoding it
