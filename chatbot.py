@@ -11,7 +11,6 @@ import pickle
 class Scorekeeper(Client):
     def __init__(self, email, pwd, whitelist, admins, key):
         super().__init__(email, pwd)
-        self.updateUsers()
         print("Reading from files...")
         stored_dicts = self.readFromFiles()
         self.name_to_score = stored_dicts[0] #username: score
@@ -137,6 +136,7 @@ class Scorekeeper(Client):
         return " ".join(output)+random.choice([".", "!", "?", ""])
 
     def onMessage(self, author_id, message_object, thread_id, thread_type, **kwargs):
+        self.updateUsers()
         #main looping function that checks for incoming messages and reacts
         self.markAsDelivered(thread_id, message_object.uid)
         time.sleep(random.randint(1,4)) #wait a few seconds before marking as read
