@@ -26,7 +26,7 @@ class Scorekeeper(Client):
     def updateUsers(self):
         print('Updating users...')
         #updates users that chatbot recognizes
-        users = self.fetchGroupInfo()
+        users = self.fetchAllUsers()
         print(users)
         for user in users:
             if user.uid not in self.uid_to_name:
