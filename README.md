@@ -7,14 +7,14 @@ Download this directory. Install fbchat with pip. Create a `secret.py` file with
 
 ```python
 #email and password of a working FB account
-email =
-password =
+email = ''
+password = ''
 #names of users with full access to commands
 ADMINS = ['Full Control']
 #names of users on the scoreboard
 WHITELIST = ['White List', 'Me Here']
 #word or phrase that will increment score
-keyword =
+keyword = ''
 ```
 
 WARNING: This bot does not abide by the Facebook Terms and Conditions. If you spam a messenger chat using this bot, FB will likely mark your account as malicious and close it. (The randomized reply delay and gibberish replies in chatbot.py are designed to combat this issue.)
