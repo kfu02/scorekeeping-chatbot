@@ -21,7 +21,7 @@ WARNING: This bot does not abide by the Facebook Terms and Conditions. If you sp
 
 ## Usage
 
-To run, type `python3 chatbot.py` into your terminal. (For long-term usage, I have mine set up to run constantly on a headless raspberry pi. command: `nohup python3 chatbot.py`) To see a list of commands, type `/help` in a Messenger chat with the bot's account. (This video is helpful for reference; it uses the same python module but adds in support for DialogFlow. https://youtu.be/hIcZZCnFcH4)
+To run, type `python3 chatbot.py` into your terminal. (For long-term usage, I have mine set up to run constantly on a headless raspberry pi. Command: `nohup python3 chatbot.py`) To see a list of commands, type `/help` in a Messenger chat with the bot's account. (This video is helpful for reference; it uses the same python module but adds in support for DialogFlow. https://youtu.be/hIcZZCnFcH4)
 
 If login fails on the first run, log in on https://m.facebook.com/login.php by hand, then call chatbot.py.
 
