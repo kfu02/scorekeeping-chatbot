@@ -103,16 +103,11 @@ class Scorekeeper(Client):
                     return str(self.whitelist)
             if "add" in msg_text:
                 args = msg_text.split(" ")
+                #print(args)
                 if len(args) == 4:
                     name = (' '.join(args[1:3])).title()
                     points = int(args[3])
-                    uid = -1
-                    for u, n in self.uid_to_name.items(): #find uid of name given
-                        if n == name:
-                            uid = u
-                    if uid != -1:
-                        self.addToScoreboard(uid, points)
-                        return self.tallyScores()
+                    return self.addToScoreboard(name, points)
 
         return "Command not recognized. Typo?"
 
@@ -125,16 +120,13 @@ class Scorekeeper(Client):
             return scores
         return "Scoreboard empty."
 
-    def addToScoreboard(self, author_id, amount):
+    def addToScoreboard(self, name, amount):
         #add amount to author_id's score in scoreboard
-        if author_id in self.uid_to_name:
-            name = self.uid_to_name[author_id]
-            if name in self.whitelist:
-                self.name_to_score[name] += amount
-                return "Score updated.\n"+self.tallyScores()
-            else:
-                return "Not on scoreboard."
-        return "???" #shouldn't be possible to get here
+        if name in self.whitelist:
+            self.name_to_score[name] += amount
+            return "Score updated.\n"+self.tallyScores()
+        else:
+            return "Not on scoreboard."
 
     def spitRandomWords(self, word_file, length):
         #returns string of words with random ending punc
@@ -165,7 +157,8 @@ class Scorekeeper(Client):
             time.sleep(random.randint(1,2)) #wait a couple seconds before replying
 
             if msg_text == self.keyword: #if keyword, add to score
-                reply = self.addToScoreboard(author_id, 1)
+                name = self.uid_to_name[author_id]
+                reply = self.addToScoreboard(name, 1)
                 self.send(Message(text=reply), thread_id=thread_id, thread_type=thread_type)
                 return
 
