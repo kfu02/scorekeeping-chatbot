@@ -29,6 +29,7 @@ This bot is designed to be used in a FB Messenger group chat, but it can be used
 
 ## TO-DO:
 
+- [ ] Look into making bot handle diff group chats differently. (fbchat API has some interesting functions/objects: the Group class, fetchGroupInfo()...)
 - [ ] Make bot better at updating list of users.
 - [ ] Streamline code.
 - [ ] Make `command_list.txt` based on actual commands used rather than hardcoding it

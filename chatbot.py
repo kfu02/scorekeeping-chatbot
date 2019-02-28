@@ -26,7 +26,8 @@ class Scorekeeper(Client):
     def updateUsers(self):
         print('Updating users...')
         #updates users that chatbot recognizes
-        users = self.fetchAllUsers()
+        users = self.fetchGroupInfo()
+        print(users)
         for user in users:
             if user.uid not in self.uid_to_name:
                 self.uid_to_name[user.uid] = user.name
@@ -143,7 +144,7 @@ class Scorekeeper(Client):
         return " ".join(output)+random.choice([".", "!", "?", ""])
 
     def onMessage(self, author_id, message_object, thread_id, thread_type, **kwargs):
-        self.updateUsers()
+        #self.updateUsers()
         #main looping function that checks for incoming messages and reacts
         self.markAsDelivered(thread_id, message_object.uid)
         time.sleep(random.randint(1,4)) #wait a few seconds before marking as read
@@ -153,7 +154,7 @@ class Scorekeeper(Client):
         #if bot not the author, reply
         if author_id != self.uid:
             time.sleep(random.randint(1,4)) #wait a few seconds before responding to command
-            #self.updateUsers()
+            self.updateUsers()
             try:
                 msg_text = message_object.text.lower()
             except AttributeError: #emoji sent
@@ -166,7 +167,7 @@ class Scorekeeper(Client):
                 reply = self.addToScoreboard(name, 1)
                 print(msg_text, name, reply)
                 self.send(Message(text=reply), thread_id=thread_id, thread_type=thread_type)
-                return
+                #return
 
             #execute command, update text files
             if "/" in msg_text:
