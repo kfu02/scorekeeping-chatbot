@@ -9,5 +9,7 @@ admin commands:
 /mod [name] to add user to whitelist
 /unmod [name] to remove user from whitelist
 /add [name] [points] to add points to name's score
+/quiet to suppress random string replies
+/unquiet to unsuppress random string replies
 
 See https://github.com/kfu02/scorekeeping-chatbot for more usage details.

@@ -18,8 +18,9 @@ class Scorekeeper(Client):
         self.whitelist = whitelist #users who can change their score
         self.admins = admins #users with full access to all commands
         self.keyword = key #word to increment score
-        for user in whitelist:
-            self.name_to_score[user] = 0
+        #for user in whitelist:
+        #    self.name_to_score[user] = 0
+        self.supress_rand_strs = False
         self.updateUsers()
 
     def updateUsers(self):
@@ -108,6 +109,12 @@ class Scorekeeper(Client):
                     name = (' '.join(args[1:3])).title()
                     points = int(args[3])
                     return self.addToScoreboard(name, points)
+            if msg_text == "quiet":
+                self.supress_rand_strs = True
+                return str(self.supress_rand_strs)
+            if msg_text == "unquiet":
+                self.supress_rand_strs = True
+                return str(self.supress_rand_strs)
 
         return "Command not recognized. Typo?"
 
@@ -145,10 +152,8 @@ class Scorekeeper(Client):
         log.info("{} from {} in {}".format(message_object, thread_id, thread_type.name))
         #if bot not the author, reply
         if author_id != self.uid:
-            if random.random() < 1.0: #always sends a rand msg
-                self.send(Message(text=self.spitRandomWords("list_of_words.txt", random.randint(2, 10))), thread_id=thread_id, thread_type=thread_type)
             time.sleep(random.randint(1,4)) #wait a few seconds before responding to command
-            self.updateUsers()
+            #self.updateUsers()
             try:
                 msg_text = message_object.text.lower()
             except AttributeError: #emoji sent
@@ -159,6 +164,7 @@ class Scorekeeper(Client):
             if msg_text == self.keyword: #if keyword, add to score
                 name = self.uid_to_name[author_id]
                 reply = self.addToScoreboard(name, 1)
+                print(msg_text, name, reply)
                 self.send(Message(text=reply), thread_id=thread_id, thread_type=thread_type)
                 return
 
@@ -169,6 +175,9 @@ class Scorekeeper(Client):
                 print(self.uid_to_name)
                 print(reply)
                 self.send(Message(text=reply), thread_id=thread_id, thread_type=thread_type)
+
+            if not self.supress_rand_strs: #always sends a rand msg
+                self.send(Message(text=self.spitRandomWords("list_of_words.txt", random.randint(2, 10))), thread_id=thread_id, thread_type=thread_type)
 
 if __name__ == '__main__':
     client = Scorekeeper(secret.email, secret.password, secret.WHITELIST, secret.ADMINS, secret.keyword)
