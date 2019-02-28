@@ -1,6 +1,8 @@
 # scorekeeping-chatbot
 A python-based chatbot for FB Messenger that tracks scores.  
 
+CURRENTLY GLITCHY, REQUIRES FRIENDING/DMING CHATBOT BY ALL USERS WHO WISH TO USE THE SCOREBOARD
+
 ## Setup
 
 Download this directory. Install fbchat with pip. Create a `secret.py` file with this format:
