@@ -10,17 +10,20 @@ import pickle
 # Subclass fbchat.Client and override required methods
 class Scorekeeper(Client):
     def __init__(self, email, pwd, whitelist, admins, key):
+        print("Initializing...")
         super().__init__(email, pwd)
-        print("Reading from files...")
         stored_dicts = self.readFromFiles()
         self.name_to_score = stored_dicts[0] #username: score
         self.uid_to_name = stored_dicts[1] #uid: username
         self.whitelist = whitelist #users who can change their score
         self.admins = admins #users with full access to all commands
         self.keyword = key #word to increment score
-        print("Done.")
+        for user in whitelist:
+            self.name_to_score[user] = 0
+        self.updateUsers()
 
     def updateUsers(self):
+        print('Updating users...')
         #updates users that chatbot recognizes
         users = self.fetchAllUsers()
         for user in users:
@@ -37,6 +40,9 @@ class Scorekeeper(Client):
         self.writeToFiles()
 
     def writeToFiles(self):
+        print('Writing to files...')
+        print(self.name_to_score)
+        print(self.uid_to_name)
         #writes all current data structures to files
         f = open('name_to_score.pkl', 'wb')
         pickle.dump(self.name_to_score, f)
@@ -47,6 +53,7 @@ class Scorekeeper(Client):
         f.close()
 
     def readFromFiles(self):
+        print("Reading from files...")
         #takes input from score and uid files
         try:
             f = open('name_to_score.pkl', 'rb')
@@ -110,12 +117,13 @@ class Scorekeeper(Client):
         return "Command not recognized. Typo?"
 
     def tallyScores(self):
-        #write current scores to file
-        scores = ""
-        for name, score in self.name_to_score.items():
-            scores += name + ": " + str(score) + "\n"
-        self.writeToFiles()
-        return scores
+        if self.name_to_score:
+            #write current scores to file
+            scores = ""
+            for name, score in self.name_to_score.items():
+                scores += name + ": " + str(score) + "\n"
+            return scores
+        return "Scoreboard empty."
 
     def addToScoreboard(self, author_id, amount):
         #add amount to author_id's score in scoreboard
@@ -145,8 +153,8 @@ class Scorekeeper(Client):
         log.info("{} from {} in {}".format(message_object, thread_id, thread_type.name))
         #if bot not the author, reply
         if author_id != self.uid:
-            #always send something random first
-            self.send(Message(text=self.spitRandomWords("list_of_words.txt", random.randint(2, 10))), thread_id=thread_id, thread_type=thread_type)
+            if random.random() < 1.0: #always sends a rand msg
+                self.send(Message(text=self.spitRandomWords("list_of_words.txt", random.randint(2, 10))), thread_id=thread_id, thread_type=thread_type)
             time.sleep(random.randint(1,4)) #wait a few seconds before responding to command
             self.updateUsers()
             try:
