@@ -114,7 +114,7 @@ class Scorekeeper(Client):
                 self.supress_rand_strs = True
                 return str(self.supress_rand_strs)
             if msg_text == "unquiet":
-                self.supress_rand_strs = True
+                self.supress_rand_strs = False
                 return str(self.supress_rand_strs)
 
         return "Command not recognized. Typo?"
