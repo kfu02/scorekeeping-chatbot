@@ -147,20 +147,20 @@ class Scorekeeper(Client):
         #self.updateUsers()
         #main looping function that checks for incoming messages and reacts
         self.markAsDelivered(thread_id, message_object.uid)
-        time.sleep(random.randint(1,4)) #wait a few seconds before marking as read
+        #time.sleep(random.randint(1,4)) #wait a few seconds before marking as read
         self.markAsRead(thread_id)
 
         log.info("{} from {} in {}".format(message_object, thread_id, thread_type.name))
         #if bot not the author, reply
         if author_id != self.uid:
-            time.sleep(random.randint(1,4)) #wait a few seconds before responding to command
+            #time.sleep(random.randint(1,4)) #wait a few seconds before responding to command
             self.updateUsers()
             try:
                 msg_text = message_object.text.lower()
             except AttributeError: #emoji sent
                 msg_text = ""
 
-            time.sleep(random.randint(1,2)) #wait a couple seconds before replying
+            #time.sleep(random.randint(1,2)) #wait a couple seconds before replying
 
             if msg_text == self.keyword: #if keyword, add to score
                 name = self.uid_to_name[author_id]
@@ -177,7 +177,8 @@ class Scorekeeper(Client):
                 print(reply)
                 self.send(Message(text=reply), thread_id=thread_id, thread_type=thread_type)
 
-            if not self.supress_rand_strs: #always sends a rand msg
+            rand_msg_chance = 0.5
+            if not self.supress_rand_strs and random.random()<rand_msg_chance: 
                 self.send(Message(text=self.spitRandomWords("list_of_words.txt", random.randint(2, 10))), thread_id=thread_id, thread_type=thread_type)
 
 if __name__ == '__main__':
